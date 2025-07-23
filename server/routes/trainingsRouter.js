@@ -1,13 +1,13 @@
 const {Router} = require('express');
 
-const traningsRouter = Router();
+const trainingsRouter = Router();
 
-traningsRouter.route('/')
+trainingsRouter.route('/')
 .post(() => {})
-.get(() => {console.log("get training ok")});
+.get(() => {});
 
-traningsRouter.route('/:id')
+trainingsRouter.route('/:id')
 .patch(() => {})
 .delete(() => {});
 
-module.exports = traningsRouter;
+module.exports = trainingsRouter;
