@@ -1,0 +1,19 @@
+POST http://localhost:5000/api/trainings
+Content-Type: application/json
+
+{
+    "title": "New Training",
+    "description": "Lorem ipsum..."
+}
+
+GET http://localhost:5000/api/trainings
+
+PATCH http://localhost:5000/api/trainings/3
+Content-Type: application/json
+
+{
+    "title": "Fitnes",
+    "description": "Some text..."
+}
+
+DELETE http://localhost:5000/api/trainings/3

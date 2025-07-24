@@ -1,13 +1,16 @@
 const {Router} = require('express');
+const {paginate} = require('./../middleware');
+const {usersControllers} = require('./../controllers');
 
 const usersRouter = Router();
 
 usersRouter.route('/')
-.post(() => {})
-.get(() => {console.log("get ok")});
+.post(usersControllers.createUser)
+.get(paginate.paginateUsers, usersControllers.getUsers);
 
 usersRouter.route('/:id')
-.patch(() => {})
-.delete(() => {});
+.get(usersControllers.getUserById)
+.patch(usersControllers.updateUserById)
+.delete(usersControllers.deleteUserById);
 
 module.exports = usersRouter;

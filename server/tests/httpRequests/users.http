@@ -1,0 +1,25 @@
+POST http://localhost:5000/api/users
+Content-Type: application/json
+
+{
+    "firstName": "Test1",
+    "lastName": "Testovich",
+    "email": "email3@gmail.com",
+    "passwordHash": "12345",
+    "birthday": "2004-08-05"
+}
+
+GET http://localhost:5000/api/users
+
+PATCH http://localhost:5000/api/users/3
+Content-Type: application/json
+
+{
+    "firstName": "Test",
+    "lastName": "Testovich",
+    "email": "email3@gmail.com",
+    "passwordHash": "12345",
+    "birthday": "2004-08-05"
+}
+
+DELETE http://localhost:5000/api/users/3
