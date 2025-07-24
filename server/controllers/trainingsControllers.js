@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const {Training} = require('./../models');
+const {Training} = require('./../db/models');
 const createHttpError = require('http-errors');
 
 module.exports.createTraining = async (req, res, next) => {
