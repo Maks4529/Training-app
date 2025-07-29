@@ -1,0 +1,41 @@
+.navMenu
+    width: 100%
+    padding: 5px
+    background-color: rgb(233, 30, 99)
+    display: flex
+    justify-content: space-around
+    align-items: center
+    position: fixed
+    left: 0
+    right: 0
+    top: 0
+    box-shadow: 0 3px 10px white
+
+.navList
+    display: flex
+    gap: 15px
+
+.navItem
+    list-style: none
+    .navLink
+        text-decoration: none
+        color: white
+        border: 2px solid white
+        padding: 7px
+        transition: background-color 0.5s
+        &:hover
+            cursor: pointer
+            background-color: white
+            color: black
+
+.logo
+    border-radius: 50%
+    border: 3px solid darkred
+    width: 100px
+    height: 100px
+    object-fit: cover
+
+.slogan
+    color: white
+    font-size: 2.5rem
+    font-family: sans-serif
