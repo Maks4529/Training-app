@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
     birthday: {
       type: DataTypes.DATEONLY,
     },
+    image: {
+      type: DataTypes.STRING(255),
+      defaultValue: '/static/images/defaultImage.jpg',
+    }
   }, {
     sequelize,
     modelName: 'User',

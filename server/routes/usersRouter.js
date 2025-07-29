@@ -1,11 +1,11 @@
 const {Router} = require('express');
-const {paginate} = require('./../middleware');
+const {paginate, upload} = require('./../middleware');
 const {usersControllers} = require('./../controllers');
 
 const usersRouter = Router();
 
 usersRouter.route('/')
-.post(usersControllers.createUser)
+.post(upload.uploadUserPhoto, usersControllers.createUser)
 .get(paginate.paginateUsers, usersControllers.getUsers);
 
 usersRouter.route('/:id')

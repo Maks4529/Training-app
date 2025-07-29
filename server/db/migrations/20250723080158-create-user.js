@@ -32,6 +32,9 @@ module.exports = {
       birthday: {
         type: Sequelize.DATEONLY
       },
+      image: {
+        type: Sequelize.STRING(255),
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

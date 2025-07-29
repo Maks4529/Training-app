@@ -1,4 +1,5 @@
 const createHttpError = require('http-errors');
+const multer = require('multer');
 const {ValidationError, BaseError} = require('sequelize');
 
 module.exports.dbErrorHandler = (err, req, res, next) => {
@@ -24,4 +25,10 @@ module.exports.errorHandler = (err, req, res, next) => {
     const message = err.message || 'Server Error!';
 
     res.status(status).send([{status, title: message}]);
+};
+
+module.exports.multerErrorHandler = (err, req, res, next) => {
+    if (err instanceof multer.MulterError){
+        return next(createHttpError(500, 'Multer Error!'));
+    }
 };
