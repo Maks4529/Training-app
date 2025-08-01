@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const {User} = require('./../db/models');
+const {User, Training} = require('./../db/models');
 const createHttpError = require('http-errors');
 
 module.exports.createUser = async (req, res, next) => {
@@ -33,8 +33,12 @@ module.exports.getUsers = async (req, res, next) => {
 
     try {
         const foundUsers = await User.findAll({
-            raw: true,
             attributes: {exclude: ['passwordHash', 'createdAt', 'updatedAt']},
+            include: {
+                model: Training,
+                attributes: ['title'],
+                through: {attributes: []},
+            }, 
             limit,
             offset,
             order: [['id', 'ASC']],
