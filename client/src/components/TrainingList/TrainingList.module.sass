@@ -1,0 +1,43 @@
+.trainingList
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    gap: 20px
+    width: 100%
+
+.training
+    display: flex
+    justify-content: space-between
+    align-items: center
+    position: relative
+    border: 2px solid white
+    border-radius: 20px 20px 20px 0
+    list-style: none
+    padding: 10px
+    width: 800px
+    color: white
+    background-color: rgb(156, 33, 74)
+    animation: slideRight 1s ease forwards
+    animation-delay: 0.2s
+
+.deleteBtn
+    padding: 5px 10px
+    background-color: transparent
+    border: 2px solid white
+    border-radius: 5px
+    color: white
+    transition: background-color 0.3s
+    &:hover
+        cursor: pointer
+        background-color: white
+        color: black
+
+
+@keyframes slideRight
+    0%
+        opacity: 0
+        transform: translateX(-60px)
+    100%
+        opacity: 1
+        transform: translateX(0)
