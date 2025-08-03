@@ -1,6 +1,7 @@
 const _ = require('lodash');
-const {User, Training} = require('./../db/models');
+const bcrypt = require('bcrypt');
 const createHttpError = require('http-errors');
+const {User, Training} = require('./../db/models');
 
 module.exports.createUser = async (req, res, next) => {
     const {body, file} = req;
@@ -64,6 +65,36 @@ module.exports.getUserById = async (req, res, next) => {
         }
 
         res.status(200).send({data: foundUser});
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports.userLogin = async (req, res, next) => {
+    const {email, password} = req.body;
+
+    try {
+        const foundUser = await User.findOne({
+            where: {email},
+        });
+
+        if (!foundUser){
+            return (createHttpError(404, 'User not found.'))
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, foundUser.passwordHash);
+
+        if (!isPasswordValid){
+            return next(createHttpError(401, 'Invalid password.'))
+        }
+
+        const preparedUser = _.omit(foundUser.get(), [
+            'createdAt',
+            'updatedAt',
+            'passwordHash',
+        ])
+
+        res.status(200).send({data: preparedUser});
     } catch (err) {
         next(err);
     }

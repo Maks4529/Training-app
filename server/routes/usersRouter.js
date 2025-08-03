@@ -13,4 +13,6 @@ usersRouter.route('/:id')
 .patch(usersControllers.updateUserById)
 .delete(usersControllers.deleteUserById);
 
+usersRouter.post('/login', usersControllers.userLogin);
+
 module.exports = usersRouter;

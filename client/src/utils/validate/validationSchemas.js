@@ -32,3 +32,15 @@ export const USER_VALIDATION_SCHEMA = yup.object({
     .mixed(),
 });
 
+export const LOGIN_VALIDATION_SCHEMA = yup.object({
+    email: yup
+    .string()
+    .email()
+    .required(),
+    password: yup
+    .string()
+    .trim()
+    .min(8)
+    .max(24)
+    .required(),
+});

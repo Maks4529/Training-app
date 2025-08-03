@@ -6,6 +6,8 @@ export const createUser = data => axiosInstance.post('/users', data);
 
 export const getUsers = () => axiosInstance.get('/users');
 
+export const userLogin = data => axiosInstance.post(`/users/login`, data);
+
 export const updateUser = (id, data) => axiosInstance.patch(`/users/${id}`, data);
 
 export const deleteUser = id => axiosInstance.delete(`/users/${id}`);

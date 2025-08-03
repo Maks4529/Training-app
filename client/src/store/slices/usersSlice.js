@@ -24,6 +24,17 @@ export const getUsersThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/get`
     }
 );
 
+export const loginUserThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/post/login`,
+    async (payload, thunkAPI) => {
+        try {
+            const {data: {data}} = await API.userLogin(payload);
+            return data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue({errors: err.response.data});
+        }
+    }
+);
+
 export const updateUserThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/update`,
     async (payload, thunkAPI) => {
         const {id, body} = payload;
@@ -49,6 +60,7 @@ export const deleteUserThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/de
 
 const initialState = {
     users: [],
+    currentUser: null,
     isFetching: false,
     error: null,
 };
@@ -81,6 +93,20 @@ const usersSlice = createSlice({
             state.users = payload;
         });
         builder.addCase(getUsersThunk.rejected, (state, {payload}) => {
+            state.isFetching = false;
+            state.error = payload;
+        });
+
+        builder.addCase(loginUserThunk.pending, state => {
+            state.isFetching = true;
+            state.error = null;
+        });
+        builder.addCase(loginUserThunk.fulfilled, (state, {payload}) => {
+            state.isFetching = false;
+            state.error = null;
+            state.currentUser = payload;
+        });
+        builder.addCase(loginUserThunk.rejected, (state, {payload}) => {
             state.isFetching = false;
             state.error = payload;
         });

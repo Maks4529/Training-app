@@ -6,7 +6,7 @@ function MorePage() {
   return (
     <div className={styles.morePage}>
       <HomeButton className={styles.homeBtn} />
-      <h2>Our training</h2>
+      <h2>Our trainings</h2>
       <TrainingList/>
     </div>
   )
