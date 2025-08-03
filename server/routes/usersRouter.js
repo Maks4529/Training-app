@@ -15,4 +15,7 @@ usersRouter.route('/:id')
 
 usersRouter.post('/login', usersControllers.userLogin);
 
+usersRouter.route('/user-trainings')
+.post(usersControllers.addTrainingToUser)
+
 module.exports = usersRouter;

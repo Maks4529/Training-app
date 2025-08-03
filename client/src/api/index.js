@@ -12,6 +12,8 @@ export const updateUser = (id, data) => axiosInstance.patch(`/users/${id}`, data
 
 export const deleteUser = id => axiosInstance.delete(`/users/${id}`);
 
+export const addTrainingToUser = data => axiosInstance.post('/users/user-trainings', data);
+
 
 export const createTraining = data => axiosInstance.post('/trainings', data);
 

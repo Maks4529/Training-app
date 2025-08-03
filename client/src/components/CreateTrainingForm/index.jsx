@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import Input from './../inputs';
 import styles from './CreateTrainingForm.module.sass';
 import { createTrainingThunk } from './../../store/slices/trainingsSlice';
+import { VALIDATION_SCHEMAS } from './../../utils';
 
 function CreateTrainingForm({createTraining}) {
   const initialValues = {
@@ -29,6 +30,7 @@ function CreateTrainingForm({createTraining}) {
   return (
     <Formik
     initialValues={initialValues}
+    validationSchema={VALIDATION_SCHEMAS.CREATE_TRAINING_VALIDATION_SCHEMA}
     onSubmit={handleSubmit}
     >
       {formikProps => (

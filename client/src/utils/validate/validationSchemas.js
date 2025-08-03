@@ -44,3 +44,16 @@ export const LOGIN_VALIDATION_SCHEMA = yup.object({
     .max(24)
     .required(),
 });
+
+export const CREATE_TRAINING_VALIDATION_SCHEMA = yup.object({
+    title: yup
+    .string()
+    .min(2)
+    .max(32)
+    .required(),
+    description: yup
+    .string()
+    .min(2)
+    .max(255)
+    .required(),
+});

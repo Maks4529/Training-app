@@ -58,6 +58,17 @@ export const deleteUserThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/de
     }
 );
 
+export const addTrainingToUserThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/add-training`,
+    async (payload, thunkAPI) => {
+        try {
+            const {data: {data}} = await API.addTrainingToUser(payload);
+            return data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue({errors: err.response.data});
+        }
+    }
+);
+
 const initialState = {
     users: [],
     currentUser: null,
@@ -135,6 +146,20 @@ const usersSlice = createSlice({
             state.users = state.users.filter(u => u.id !== payload);
         });
         builder.addCase(deleteUserThunk.rejected, (state, {payload}) => {
+            state.isFetching = false;
+            state.error = payload;
+        });
+
+        builder.addCase(addTrainingToUserThunk.pending, state => {
+            state.isFetching = true;
+            state.error = null;
+        });
+        builder.addCase(addTrainingToUserThunk.fulfilled, (state, {payload}) => {
+            state.isFetching = false;
+            state.error = null;
+            state.currentUser = payload;
+        });
+        builder.addCase(addTrainingToUserThunk.rejected, (state, {payload}) => {
             state.isFetching = false;
             state.error = payload;
         });

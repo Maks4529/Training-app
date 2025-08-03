@@ -20,6 +20,10 @@ function UserProfilePage() {
             <p className={styles.userInfoItem}>{`Birthday: ${currentUser.birthday}`}</p>
             <p className={styles.userInfoItem}>{`Email: ${currentUser.email}`}</p>
         </div>
+        <h3>Your trainings</h3>
+        {currentUser.Trainings.length !== 0 ? <ul className={styles.userTrainingList}>
+          {currentUser.Trainings.map(t => <li className={styles.userTraining} key={t.id}>{t.title}</li>)}
+        </ul>: <p className={styles.trainingsNotFound}>Trainings is not found ¯\_(ツ)_/¯</p>}
     </div>
   )
 }

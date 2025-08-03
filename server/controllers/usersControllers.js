@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const createHttpError = require('http-errors');
-const {User, Training} = require('./../db/models');
+const {User, Training, UserTraining} = require('./../db/models');
 
 module.exports.createUser = async (req, res, next) => {
     const {body, file} = req;
@@ -76,6 +76,10 @@ module.exports.userLogin = async (req, res, next) => {
     try {
         const foundUser = await User.findOne({
             where: {email},
+            include: {
+                model: Training,
+                through: {attributes: []},
+            },
         });
 
         if (!foundUser){
@@ -137,6 +141,44 @@ module.exports.deleteUserById = async (req, res, next) => {
        }
 
        res.status(204).end();
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports.addTrainingToUser = async (req, res, next) => {
+    const {userId, trainingId} = req.body;
+
+    try {
+
+        const foundUser = await User.findByPk(userId, {
+            include: {
+                model: Training,
+            },
+        });
+        const foundTraining = await Training.findByPk(trainingId);
+
+        if (!foundUser || !foundTraining){
+            return next(createHttpError(404, 'User or training not found'));
+        }
+
+        const alreadyExist = foundUser.Trainings?.some(training => trainingId === training.id);
+
+        if (alreadyExist){
+            return next(createHttpError(409, 'Training already added to user'));
+        }
+
+        await UserTraining.create({
+            userId: foundUser.id,
+            trainingId: foundTraining.id,
+        });
+
+        const updatedUser = await User.findByPk(userId, {
+            include: Training,
+        });
+
+    res.status(201).send({data: updatedUser});
+
     } catch (err) {
         next(err);
     }
