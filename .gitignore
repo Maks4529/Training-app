@@ -4,5 +4,5 @@ node_modules/
 
 .env
 
-public/images/*
-!public/images/defaultImage.jpg
+server/public/images/*
+!server/public/images/defaultImage.jpg
