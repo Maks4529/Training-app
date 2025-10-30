@@ -1,9 +1,15 @@
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import { logout } from '../../store/slices/usersSlice';
 import HomeButton from '../../components/HomeButton';
 import styles from './UserProfilePage.module.sass';
 
 function UserProfilePage() {
     const currentUser = useSelector(state => state.usersData.currentUser);
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+      dispatch(logout());
+    }
 
     if (!currentUser){
         return <div className={styles.loading}>Loading user profile...</div>
@@ -21,9 +27,10 @@ function UserProfilePage() {
             <p className={styles.userInfoItem}>{`Email: ${currentUser.email}`}</p>
         </div>
         <h3>Your trainings</h3>
-        {currentUser.Trainings.length !== 0 ? <ul className={styles.userTrainingList}>
+        {currentUser.Trainings?.length ? (<ul className={styles.userTrainingList}>
           {currentUser.Trainings.map(t => <li className={styles.userTraining} key={t.id}>{t.title}</li>)}
-        </ul>: <p className={styles.trainingsNotFound}>Trainings is not found ¯\_(ツ)_/¯</p>}
+        </ul>): <p className={styles.trainingsNotFound}>Trainings is not found ¯\_(ツ)_/¯</p>}
+        <button className={styles.logoutBtn} onClick={handleLogout}>Logout</button>
     </div>
   )
 }

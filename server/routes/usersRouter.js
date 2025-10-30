@@ -1,4 +1,5 @@
 const {Router} = require('express');
+const checkToken = require('./../middleware/checkToken');
 const {paginate, upload} = require('./../middleware');
 const {usersControllers} = require('./../controllers');
 
@@ -8,14 +9,16 @@ usersRouter.route('/')
 .post(upload.uploadUserPhoto, usersControllers.createUser)
 .get(paginate.paginateUsers, usersControllers.getUsers);
 
-usersRouter.route('/:id')
-.get(usersControllers.getUserById)
-.patch(usersControllers.updateUserById)
-.delete(usersControllers.deleteUserById);
-
 usersRouter.post('/login', usersControllers.userLogin);
 
+usersRouter.get('/profile', checkToken, usersControllers.getProfile);
+
+usersRouter.route('/:id')
+.get(checkToken, usersControllers.getUserById)
+.patch(checkToken, usersControllers.updateUserById)
+.delete(checkToken, usersControllers.deleteUserById);
+
 usersRouter.route('/user-trainings')
-.post(usersControllers.addTrainingToUser)
+.post(checkToken, usersControllers.addTrainingToUser)
 
 module.exports = usersRouter;

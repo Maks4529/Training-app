@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { connect } from 'react-redux';
 import Input from './../inputs';
 import styles from './RegistrationForm.module.sass';
-import { createUserThunk } from './../../store/slices/usersSlice';
+import { createUserThunk, loginUserThunk } from './../../store/slices/usersSlice';
 import { VALIDATION_SCHEMAS } from './../../utils';
 
-function RegistrationForm ({ createUser }) {
+function RegistrationForm ({ createUser, getUser }) {
   const [preview, setPreview] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     return () => {
@@ -31,7 +33,7 @@ function RegistrationForm ({ createUser }) {
     invalid: styles.invalid,
   };
 
-  const handleSubmit = (values, formikBag) => {
+  const handleSubmit = async(values, formikBag) => {
     const formData = new FormData();
 
     formData.append('firstName', values.firstName);
@@ -40,10 +42,20 @@ function RegistrationForm ({ createUser }) {
     formData.append('passwordHash', values.passwordHash);
     formData.append('birthday', values.birthday);
     formData.append('userPhoto', values.userPhoto);
+    try {
+      await createUser(formData);
+  
+      await getUser({
+        email: values.email,
+        password: values.passwordHash,
+      });
 
-    createUser(formData);
-
-    formikBag.resetForm();
+      navigate('/');
+      formikBag.resetForm();
+    } catch (err) {
+      formikBag.resetForm();
+      alert('Registration or login failed. Please try again.');
+    }
   };
 
   return (
@@ -116,6 +128,7 @@ function RegistrationForm ({ createUser }) {
 
 const mapDispatchToProps = dispatch => ({
   createUser: data => dispatch(createUserThunk(data)),
+  getUser: data => dispatch(loginUserThunk(data)),
 });
 
 export default connect(null, mapDispatchToProps)(RegistrationForm);

@@ -6,7 +6,8 @@ export const createUserThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/cr
     async (payload, thunkAPI) => {
         try {
             const {data: {data}} = await API.createUser(payload);
-            return data;
+            localStorage.setItem('token', data.token);
+            return data.user;
         } catch (err) {
             return thunkAPI.rejectWithValue({errors: err.response.data});
         }
@@ -24,11 +25,28 @@ export const getUsersThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/get`
     }
 );
 
+export const getProfileThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/get/profile`,
+    async (payload, thunkAPI) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) {
+                return thunkAPI.rejectWithValue({errors: 'No token found'});
+            }
+
+            const {data: {data}} = await API.getProfile();
+            return data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue({errors: err.response.data});
+        }
+    }
+)
+
 export const loginUserThunk = createAsyncThunk(`${CONSTANTS.USER_SLICE_NAME}/post/login`,
     async (payload, thunkAPI) => {
         try {
             const {data: {data}} = await API.userLogin(payload);
-            return data;
+            localStorage.setItem('token', data.token);
+            return data.user;
         } catch (err) {
             return thunkAPI.rejectWithValue({errors: err.response.data});
         }
@@ -79,6 +97,13 @@ const initialState = {
 const usersSlice = createSlice({
     name: CONSTANTS.USER_SLICE_NAME,
     initialState,
+    reducers: {
+        logout: (state) => {
+            state.currentUser = null;
+            localStorage.removeItem('token');
+            window.location.href  ='/login';
+        }
+    },
     extraReducers: builder => {
         builder.addCase(createUserThunk.pending, state => {
             state.isFetching = true;
@@ -163,9 +188,24 @@ const usersSlice = createSlice({
             state.isFetching = false;
             state.error = payload;
         });
+
+        builder.addCase(getProfileThunk.pending, state => {
+            state.isFetching = true;
+            state.error = null;
+        });
+        builder.addCase(getProfileThunk.fulfilled, (state, {payload}) => {
+            state.isFetching = false;
+            state.error = null;
+            state.currentUser = payload;
+        });
+        builder.addCase(getProfileThunk.rejected, (state, {payload}) => {
+            state.isFetching = false;
+            state.error = payload;
+        });
     }
 });
 
+export const {logout} = usersSlice.actions;
 const { reducer } = usersSlice;
 
 export default reducer;

@@ -1,3 +1,6 @@
+import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import { getProfileThunk } from './store/slices/usersSlice';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import RegistrationPage from './pages/RegistrationPage';
@@ -8,6 +11,12 @@ import UserProfilePage from './pages/UserProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProfileThunk());
+  }, [dispatch]);
+
   return (
     <div>
       <Router>

@@ -1,11 +1,13 @@
 import { Formik, Form } from 'formik';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Input from './../inputs';
 import styles from './LoginForm.module.sass';
 import { loginUserThunk } from './../../store/slices/usersSlice';
 import { VALIDATION_SCHEMAS } from './../../utils';
 
 function LoginForm ({ getUser }) {
+  const navigate = useNavigate();
   const initialValues = {
     email: '',
     password: '',
@@ -18,12 +20,13 @@ function LoginForm ({ getUser }) {
     invalid: styles.invalid,
   };
 
-  const handleSubmit = (values, formikBag) => {
-    getUser({
+  const handleSubmit = async(values, formikBag) => {
+    await getUser({
       email: values.email,
       password: values.password,
     });
 
+    navigate('/');
     formikBag.resetForm();
   };
 

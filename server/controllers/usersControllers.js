@@ -1,6 +1,8 @@
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const createHttpError = require('http-errors');
+const jwt = require('jsonwebtoken');
+const CONSTANTS = require('./../constants');
 const {User, Training, UserTraining} = require('./../db/models');
 
 module.exports.createUser = async (req, res, next) => {
@@ -23,7 +25,10 @@ module.exports.createUser = async (req, res, next) => {
             'updatedAt',
         ]);
 
-        res.status(201).send({data: preparedUser});
+        const payload = {id: preparedUser.id, email: preparedUser.email};
+        const token = jwt.sign(payload, CONSTANTS.JWT_SECRET, {expiresIn: CONSTANTS.ACCESS_TOKEN_TIME});
+
+        res.status(201).send({data: {user: preparedUser, token}});
     } catch (err) {
         next(err);
     }
@@ -96,9 +101,13 @@ module.exports.userLogin = async (req, res, next) => {
             'createdAt',
             'updatedAt',
             'passwordHash',
-        ])
+        ]);
 
-        res.status(200).send({data: preparedUser});
+        const payload = {id: preparedUser.id, email: preparedUser.email};
+
+        const token = jwt.sign(payload, CONSTANTS.JWT_SECRET, {expiresIn: CONSTANTS.ACCESS_TOKEN_TIME});
+
+        res.status(200).send({data: {user: preparedUser, token}});
     } catch (err) {
         next(err);
     }
@@ -183,3 +192,34 @@ module.exports.addTrainingToUser = async (req, res, next) => {
         next(err);
     }
 };
+
+module.exports.getProfile = async(req, res, next) => {
+    try {
+        if(!req.user || !req.user.userId) {
+            return next(createHttpError(401, 'User not authenticated!'))
+        }
+
+        const userId = req.user.userId;
+
+        const foundUser = await User.findByPk(userId, {
+            include: {
+                model: Training,
+                through: {attributes: []},
+            }
+        });
+
+        if(!foundUser) {
+            return next(createHttpError(404, 'User not found!'));
+        }
+
+        const preparedUser = _.omit(foundUser.get(), [
+            'passwordHash',
+            'createdAt',
+            'updatedAt',
+        ]);
+
+        res.status(200).send({data: preparedUser});
+    } catch (err) {
+        next(err);
+    }
+}

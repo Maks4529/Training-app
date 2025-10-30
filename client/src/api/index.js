@@ -1,12 +1,12 @@
-import axios from 'axios';
-
-const axiosInstance = axios.create({baseURL: 'http://localhost:5000/api'});
+import axiosInstance from './interceptor';
 
 export const createUser = data => axiosInstance.post('/users', data);
 
 export const getUsers = () => axiosInstance.get('/users');
 
 export const userLogin = data => axiosInstance.post(`/users/login`, data);
+
+export const getProfile = () => axiosInstance.get('/users/profile');
 
 export const updateUser = (id, data) => axiosInstance.patch(`/users/${id}`, data);
 
