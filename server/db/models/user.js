@@ -1,6 +1,7 @@
 'use strict';
 const {Model} = require('sequelize');
 const {hashSync} = require('bcrypt');
+const {ROLE: {USER, TRAINER, ADMIN}} = require('./../../constants');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -41,6 +42,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     birthday: {
       type: DataTypes.DATEONLY,
+    },
+    role: {
+      type: DataTypes.ENUM(USER, TRAINER, ADMIN),
+      allowNull: false,
+      defaultValue: USER,
     },
     image: {
       type: DataTypes.STRING(255),

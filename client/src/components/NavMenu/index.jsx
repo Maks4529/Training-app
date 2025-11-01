@@ -13,7 +13,9 @@ function NavMenu() {
             {currentUser ? (
                 <>
                 <li className={styles.navItem}>
+                {currentUser.role === 'trainer' &&
                 <NavLink className={styles.navLink} to='/create'>Create training</NavLink>
+                }
             </li>
             <li className={styles.navItem}>
                 <NavLink to='/profile'><img className={styles.profileImageLink} src={`http://localhost:5000${currentUser.image}`} alt='user profile'/></NavLink>

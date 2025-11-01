@@ -23,6 +23,7 @@ function UserProfilePage() {
         <div className={styles.userInfo}>
             <p className={styles.userInfoItem}>{`First name: ${currentUser.firstName}`}</p>
             <p className={styles.userInfoItem}>{`Last name: ${currentUser.lastName}`}</p>
+            <p className={styles.userInfoItem}>{`Role: ${currentUser.role}`}</p>
             <p className={styles.userInfoItem}>{`Birthday: ${currentUser.birthday}`}</p>
             <p className={styles.userInfoItem}>{`Email: ${currentUser.email}`}</p>
         </div>

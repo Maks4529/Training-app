@@ -1,4 +1,5 @@
 'use strict';
+const {ROLE: {USER, TRAINER, ADMIN}} = require('./../../constants');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -31,6 +32,11 @@ module.exports = {
       },
       birthday: {
         type: Sequelize.DATEONLY
+      },
+      role: {
+        type: Sequelize.ENUM(USER, TRAINER, ADMIN),
+        allowNull: false,
+        defaultValue: USER,
       },
       image: {
         type: Sequelize.STRING(255),
