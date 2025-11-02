@@ -8,6 +8,7 @@ import CreateTrainingPage from './pages/CreateTrainingPage';
 import LoginPage from './pages/LoginPage';
 import MorePage from './pages/MorePage';
 import UserProfilePage from './pages/UserProfilePage';
+import UpdateProfilePage from './pages/UpdateProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path='/login' Component={LoginPage} />
           <Route path='/trainings' Component={MorePage} />
           <Route path='/profile' Component={UserProfilePage} />
+          <Route path='/update-profile' Component={UpdateProfilePage} />
           <Route path='*' Component={NotFoundPage} />
         </Routes>
       </Router>

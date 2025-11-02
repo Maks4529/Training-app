@@ -1,7 +1,10 @@
 import {useSelector, useDispatch} from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { logout } from '../../store/slices/usersSlice';
 import HomeButton from '../../components/HomeButton';
 import styles from './UserProfilePage.module.sass';
+import { Link } from 'react-router-dom';
 
 function UserProfilePage() {
     const currentUser = useSelector(state => state.usersData.currentUser);
@@ -20,6 +23,7 @@ function UserProfilePage() {
         <HomeButton className={styles.homeBtn} />
         <h2>{`Hello, ${currentUser.firstName} ${currentUser.lastName}`}</h2>
         <img className={styles.userProfileImage} src={`http://localhost:5000${currentUser.image}`} alt='user profile'/>
+        <Link to='/update-profile' className={styles.editBtn}><FontAwesomeIcon icon={faPencil} /></Link>
         <div className={styles.userInfo}>
             <p className={styles.userInfoItem}>{`First name: ${currentUser.firstName}`}</p>
             <p className={styles.userInfoItem}>{`Last name: ${currentUser.lastName}`}</p>

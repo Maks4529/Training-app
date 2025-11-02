@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import {CONSTANTS} from './../../constants/constants';
 
 export const USER_VALIDATION_SCHEMA = yup.object({
     firstName: yup
@@ -28,6 +29,32 @@ export const USER_VALIDATION_SCHEMA = yup.object({
     birthday: yup
     .date()
     .max(new Date()),
+    userPhoto: yup
+    .mixed(),
+});
+
+export const UPDATE_USER_VALIDATION_SCHEMA = yup.object({
+    firstName: yup
+    .string()
+    .trim()
+    .min(2)
+    .max(32)
+    .matches(/^[A-Z][a-z]+$/, "The name must start with a capital letter")
+    .required(),
+    lastName: yup
+    .string()
+    .trim()
+    .min(2)
+    .max(32)
+    .matches(/^[A-Z][a-z]+$/, "The surname must start with a capital letter")
+    .required(),
+    birthday: yup
+    .date()
+    .max(new Date()),
+    role: yup
+    .string()
+    .oneOf([CONSTANTS.ROLE.USER, CONSTANTS.ROLE.TRAINER, CONSTANTS.ROLE.ADMIN], 'Invalid role!')
+    .required(),
     userPhoto: yup
     .mixed(),
 });
